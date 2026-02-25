@@ -1,0 +1,21 @@
+[package]
+name = "pubsub-tap"
+version = "0.1.0"
+edition = "2021"
+description = "Real-time message viewer for Google Cloud Pub/Sub emulator"
+license = "MIT"
+repository = "https://github.com/kbosompem/pubsub-tap"
+
+[dependencies]
+axum = { version = "0.8", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+tokio-stream = { version = "0.1", features = ["sync"] }
+futures = "0.3"
+reqwest = { version = "0.12", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+tower-http = { version = "0.6", features = ["fs"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"

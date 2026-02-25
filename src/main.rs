@@ -111,6 +111,7 @@ async fn main() {
     let api = Router::new()
         .route("/api/events", get(sse_handler))
         .route("/api/topics", get(topics_handler))
+        .route("/healthz", get(health_handler))
         .with_state(Arc::clone(&state));
 
     let app = api.fallback_service(
@@ -145,6 +146,14 @@ async fn sse_handler(
         })
     });
     Sse::new(stream).keep_alive(KeepAlive::new().interval(Duration::from_secs(15)))
+}
+
+// ---------------------------------------------------------------------------
+// Health check
+// ---------------------------------------------------------------------------
+
+async fn health_handler() -> &'static str {
+    "ok"
 }
 
 // ---------------------------------------------------------------------------

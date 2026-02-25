@@ -18,7 +18,7 @@ RUN touch src/main.rs && cargo build --release
 
 # Stage 3: Minimal runtime
 FROM debian:bookworm-slim
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ca-certificates curl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=backend /app/target/release/pubsub-tap /usr/local/bin/pubsub-tap
 COPY --from=frontend /app/build /app/static
@@ -26,4 +26,6 @@ COPY --from=frontend /app/build /app/static
 ENV STATIC_DIR=/app/static
 ENV PORT=4000
 EXPOSE 4000
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 --start-period=3s \
+  CMD curl -f http://127.0.0.1:4000/healthz || exit 1
 CMD ["pubsub-tap"]
